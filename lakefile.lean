@@ -23,7 +23,6 @@ lean_lib Sqlean where
   nativeFacets := #[`sqlean, Module.oFacet]
   moreLinkArgs := #["-lsqlite3"]
 
--- Doesn't work right now
 lean_exe sqlean_test where
   root := `examples.test
   moreLinkArgs := #["-lsqlite3"]
