@@ -14,14 +14,16 @@ target libsqlean pkg : FilePath := do
   let sqleanO ← fetch <| pkg.target ``sqlean.o
   buildLeanSharedLib (pkg.nativeLibDir / name) #[sqleanO]
 
+module_facet sqlean mod : FilePath := libsqlean.fetch
+
 @[default_target]
 lean_lib Sqlean where
   precompileModules := true
   extraDepTargets := #[``libsqlean]
-  moreLinkArgs := #["-lsqlean", "-lsqlite3"]
+  nativeFacets := #[`sqlean, Module.oFacet]
+  moreLinkArgs := #["-lsqlite3"]
 
 -- Doesn't work right now
 lean_exe sqlean_test where
   root := `examples.test
-  extraDepTargets := #[``libsqlean]
-  moreLinkArgs := #["-I./c/sqlean.cpp", "-lsqlite3"]
+  moreLinkArgs := #["-lsqlite3"]
